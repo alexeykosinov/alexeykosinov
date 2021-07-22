@@ -1,4 +1,4 @@
-# Alexey Kosinov, 29, Moscow, Russia
+# Alexey Kosinov, Moscow, Russia
 
 :email: [LinkedIn](https://www.linkedin.com/in/a-kosinov/)
 
