@@ -2,7 +2,7 @@
 
 [![](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/a-kosinov/)
 &nbsp;
-[![](https://img.shields.io/badge/ProtonMail-8B89CC?style=for-the-badge&logo=protonmail&logoColor=white)](kosinov@protonmail.com)
+[![](https://img.shields.io/badge/ProtonMail-8B89CC?style=for-the-badge&logo=protonmail&logoColor=white)](mailto:kosinov@protonmail.com)
 	
 Formerly radio engineer, located in Moscow, looking for a interesting job, deeply connected with the embedded development electronic hardware and FPGA. Possesses skills, which required to perform complex tasks in the area of building digital control and acquisition systems for a remote sensing satellites. 
 I have experience to develop firmware for a Xilinx FPGA's and some MCU (early Atmel chips, STM32F4, STM32H7). 
