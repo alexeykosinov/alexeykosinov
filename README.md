@@ -22,7 +22,7 @@ I have experience to develop firmware for a Xilinx FPGA's and some MCU (early At
   - asynchronous communication with DSP (using EMIFA or similar interfaces)
   ...
   
-#### Using C language:
+#### Using C/C++ language:
   - lower-speed interfaces (...)
   - ethernet (LWIP, TCP/IP stack)
   - USB communication (VCP, HID, FATFS)
