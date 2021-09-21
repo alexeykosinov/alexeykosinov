@@ -34,6 +34,7 @@ Have over 5+ experience to develop firmware for a Xilinx FPGA's and some MCU (ea
   - json'ing
 
 ### Hardware Skills
+  - design complex fault tolerant functionality and high performance into systems for space applications
   - pre-/post-topological analysis, delay analysis
   - strong lab skills, including use of common test and measurement equipment (oscilloscopes, logic analyzers, etc.) to debug complex electronic circuits
   - start-to-finish design skills with industry-standard CAD/EDA tools, including schematic entry, PCB layout, component definition, and CAD library management (Mentor Graphics Xpedition, have some experience with Altium Designer and Allegro PCB)
