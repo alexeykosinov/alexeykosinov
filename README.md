@@ -9,7 +9,7 @@ Have over 5+ experience to develop firmware for a Xilinx FPGA's and some MCU (ea
 
 ## Skills
 
-### Embedded Skills
+### Embedded
   - VHDL/C/C++ lower-speed interfaces such as I2C, SPI, 1-wire, UART - and various modification depends on the task
   - VHDL       high-speed SerDes transceivers: custom development, tunning, debugging
   - VHDL       fiber optics transceivers communication
@@ -33,7 +33,7 @@ Have over 5+ experience to develop firmware for a Xilinx FPGA's and some MCU (ea
   - parsing stuff
   - json'ing
 
-### Hardware Skills
+### Hardware
   - design complex fault tolerant functionality and high performance into systems for space applications
   - pre-/post-topological analysis, delay analysis
   - strong lab skills, including use of common test and measurement equipment (oscilloscopes, logic analyzers, etc.) to debug complex electronic circuits
