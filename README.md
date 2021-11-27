@@ -11,6 +11,7 @@ Have over 5+ experience to develop firmware for a Xilinx FPGA's and some MCU (ea
 
 ### Embedded
   - VHDL/C/C++ lower-speed interfaces such as I2C, SPI, 1-wire, UART - and various modification depends on the task
+  - VHDL       MIL-STD-1554B
   - VHDL       high-speed SerDes transceivers: custom development, tunning, debugging
   - VHDL       fiber optics transceivers communication
   - VHDL/C/C++ connectivity between FPGA and DAC / ADC using LVDS-bus or JESD204 protocol
