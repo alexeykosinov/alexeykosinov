@@ -6,6 +6,7 @@
 	
 Formerly radio engineer, located in Moscow, looking for an interesting job deeply connected with the embedded development & hardware design. Possesses skills, which required to perform complex tasks in the area of building digital control and acquisition systems for a remote sensing satellites. 
 Have over 5+ experience to develop firmware for a Xilinx FPGA's and some MCU (early Atmel chips, STM32F4, STM32H7) and Texas Instruments TMS320 DSP. 
+Also have an experience to build small CLI-applications to communicate with the lab tools or a custom devices.
 
 ## Skills
 
