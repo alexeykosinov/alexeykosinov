@@ -50,6 +50,6 @@ Also have an experience to build small CLI-applications to communicate with the 
 
 ## Experience
 
-### JSC «Research Institute of Precision Instruments» (2009 - present)
-    Current position:
+### JSC «Research Institute of Precision Instruments» (2009 - 2022)
+    Last position:
         Senior Engineer at air- and spaceborne radar systems for the Earth observation department
