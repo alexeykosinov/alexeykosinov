@@ -13,6 +13,7 @@ board and access DDR/QSPI.
 
 ```text
 rfsoc-openocd/
+  interface/ft4232h-channel-a-jtag.cfg
   openocd.cfg                    # JTAG adapter + ZynqMP/RFSoC target
   scripts/load-fsbl-uboot.tcl    # load FSBL ELF, wait, load U-Boot ELF
 ```
@@ -27,7 +28,52 @@ openocd \
   -f rfsoc-openocd/scripts/load-fsbl-uboot.tcl
 ```
 
-If your JTAG adapter is not Digilent HS2, override the interface file:
+By default this uses `rfsoc-openocd/interface/ft4232h-channel-a-jtag.cfg`,
+intended for a custom FT4232H adapter where channel A is JTAG and the remaining
+channels are UARTs.
+
+The default FT4232H USB ID is `0403:6011`. If your EEPROM programmed by Xilinx
+`program_ftdi` uses a different VID/PID, override it:
+
+```bash
+openocd \
+  -c "set FTDI_VID 0x0403" \
+  -c "set FTDI_PID 0x6011" \
+  -c "set FTDI_CHANNEL 0" \
+  -f rfsoc-openocd/openocd.cfg \
+  -c "set FSBL_ELF /absolute/path/to/fsbl.elf" \
+  -c "set UBOOT_ELF /absolute/path/to/u-boot.elf" \
+  -f rfsoc-openocd/scripts/load-fsbl-uboot.tcl
+```
+
+If several FTDI adapters are attached, select the programmed EEPROM serial:
+
+```bash
+-c "set FTDI_SERIAL your-serial-string"
+```
+
+On Linux, the currently enumerated VID/PID and serial are usually visible with:
+
+```bash
+lsusb -d 0403:
+udevadm info -q property -n /dev/ttyUSB0 | grep -E 'ID_VENDOR_ID|ID_MODEL_ID|ID_SERIAL_SHORT'
+```
+
+The FT4232H channel A wiring assumed by the interface file is:
+
+```text
+ADBUS0 / TCK / SK  -> RFSoC TCK
+ADBUS1 / TDI / DO  -> RFSoC TDI
+ADBUS2 / TDO / DI  <- RFSoC TDO
+ADBUS3 / TMS / CS  -> RFSoC TMS
+GND                -> board GND
+```
+
+The JTAG voltage must match the board JTAG bank through VREF-aware buffers or
+level shifting. The FT4232H USB chip itself is not a 1.8 V JTAG adapter unless
+your custom hardware provides the proper I/O voltage domain/translation.
+
+If your JTAG adapter is not this custom FT4232H, override the interface file:
 
 ```bash
 openocd \
