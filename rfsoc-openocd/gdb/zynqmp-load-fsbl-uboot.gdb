@@ -9,6 +9,8 @@
 #   load_fsbl /absolute/path/to/fsbl.elf
 #   # wait for FSBL to initialize clocks/MIO/DDR, then press Ctrl-C
 #   load_uboot /absolute/path/to/u-boot.elf
+#   # when U-Boot is running, press Ctrl-C in GDB and copy a binary to DDR
+#   load_bin_to_ddr /absolute/path/to/firmware.bin 0x10000000
 
 set pagination off
 set confirm off
@@ -33,6 +35,18 @@ define load_fsbl
     echo Loading FSBL: $arg0\n
     file $arg0
     load
+    continue
+end
+
+define load_bin_to_ddr
+    if $argc != 2
+        echo Usage: load_bin_to_ddr BIN_FILE DDR_ADDRESS\n
+        quit 1
+    end
+
+    echo Copying binary to DDR: $arg0 -> $arg1\n
+    monitor halt
+    restore $arg0 binary $arg1
     continue
 end
 

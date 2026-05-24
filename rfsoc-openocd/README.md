@@ -132,6 +132,75 @@ set $pc = 0xENTRY_ADDRESS
 continue
 ```
 
+## 3. Copy a firmware binary to DDR through JTAG/GDB
+
+After U-Boot is running, the firmware image still has to be copied from the PC
+into RFSoC DDR before U-Boot can write it to QSPI. Without Ethernet/TFTP, use
+the same OpenOCD GDB connection and GDB's `restore ... binary ...` command.
+
+Pick a DDR address that is free and does not overlap U-Boot, stacks, malloc
+area or the image itself. `0x10000000` is a common example, but verify it
+against your U-Boot memory map.
+
+From GDB, interrupt U-Boot, copy the file to DDR, then continue U-Boot:
+
+```gdb
+load_bin_to_ddr /absolute/path/to/firmware.bin 0x10000000
+```
+
+The helper command above is equivalent to:
+
+```gdb
+monitor halt
+restore /absolute/path/to/firmware.bin binary 0x10000000
+continue
+```
+
+Because this transfer bypasses U-Boot file loading commands, U-Boot does not
+automatically know the file size. Get the size on the host in hexadecimal:
+
+```bash
+printf '0x%x\n' "$(stat -c '%s' /absolute/path/to/firmware.bin)"
+```
+
+Then, in the U-Boot console, set the RAM address and size manually:
+
+```bash
+setenv loadaddr 0x10000000
+setenv filesize 0xYOUR_FILE_SIZE_HEX
+```
+
+Probe the QSPI flash and write the RAM buffer to flash offset `0x0`:
+
+```bash
+sf probe
+sf update ${loadaddr} 0x0 ${filesize}
+```
+
+If `sf update` is not available in your U-Boot build, erase and write manually.
+The erase length usually must be aligned to the flash erase sector size. For a
+256 KiB erase sector:
+
+```bash
+setexpr erase_size ${filesize} + 0x3ffff
+setexpr erase_size ${erase_size} '&' 0xfffc0000
+sf erase 0x0 ${erase_size}
+sf write ${loadaddr} 0x0 ${filesize}
+```
+
+Verify by reading QSPI back to another DDR address and comparing:
+
+```bash
+setenv verifyaddr 0x20000000
+sf read ${verifyaddr} 0x0 ${filesize}
+cmp.b ${loadaddr} ${verifyaddr} ${filesize}
+```
+
+For the dual-parallel QSPI32 connection, U-Boot should expose the two
+S25HS512T devices as one logical SPI flash. Do not split the binary manually
+unless your board support package or U-Boot driver is not configured for
+parallel QSPI.
+
 ## Notes for ZynqMP/RFSoC
 
 - `fsbl.elf` must be built for the exact board configuration: PS clocks, MIO,
