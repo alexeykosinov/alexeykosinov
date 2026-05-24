@@ -15,8 +15,7 @@ board and access DDR/QSPI.
 ```text
 rfsoc-openocd/
   gdb/zynqmp-load-fsbl-uboot.gdb
-  interface/ft4232h-channel-a-jtag.cfg
-  openocd.cfg                    # JTAG adapter + ZynqMP/RFSoC target
+  openocd.cfg                    # FT4232H JTAG adapter + ZynqMP/RFSoC target
 ```
 
 ## 1. Start OpenOCD
@@ -25,9 +24,8 @@ rfsoc-openocd/
 openocd -f rfsoc-openocd/openocd.cfg
 ```
 
-By default this uses `rfsoc-openocd/interface/ft4232h-channel-a-jtag.cfg`,
-intended for a custom FT4232H adapter where channel A is JTAG and the remaining
-channels are UARTs.
+`openocd.cfg` is self-contained and intended for a custom FT4232H adapter where
+channel A is JTAG and the remaining channels are UARTs.
 
 The default FT4232H USB ID is `0403:6011`. If your EEPROM programmed by Xilinx
 `program_ftdi` uses a different VID/PID, override it:
@@ -53,7 +51,7 @@ lsusb -d 0403:
 udevadm info -q property -n /dev/ttyUSB0 | grep -E 'ID_VENDOR_ID|ID_MODEL_ID|ID_SERIAL_SHORT'
 ```
 
-The FT4232H channel A wiring assumed by the interface file is:
+The FT4232H channel A wiring assumed by `openocd.cfg` is:
 
 ```text
 ADBUS0 / TCK / SK  -> RFSoC TCK
@@ -66,15 +64,6 @@ GND                -> board GND
 The JTAG voltage must match the board JTAG bank through VREF-aware buffers or
 level shifting. The FT4232H USB chip itself is not a 1.8 V JTAG adapter unless
 your custom hardware provides the proper I/O voltage domain/translation.
-
-If your JTAG adapter is not this custom FT4232H, override the interface file:
-
-```bash
-openocd \
-  -c "set JTAG_INTERFACE interface/jlink.cfg" \
-  -c "set JTAG_SPEED_KHZ 8000" \
-  -f rfsoc-openocd/openocd.cfg
-```
 
 ## 2. Load FSBL and U-Boot from GDB
 
