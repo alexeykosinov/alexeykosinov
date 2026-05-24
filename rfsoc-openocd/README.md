@@ -70,30 +70,40 @@ your custom hardware provides the proper I/O voltage domain/translation.
 In another terminal:
 
 ```bash
-aarch64-none-elf-gdb \
-  -ex "source rfsoc-openocd/gdb/zynqmp-load-fsbl-uboot.gdb" \
-  -ex "connect_zynqmp localhost:3333" \
-  -ex "load_fsbl_uboot /absolute/path/to/fsbl.elf /absolute/path/to/u-boot.elf"
+aarch64-none-elf-gdb
+```
+
+Then from the GDB prompt:
+
+```gdb
+source rfsoc-openocd/gdb/zynqmp-load-fsbl-uboot.gdb
+connect_zynqmp localhost:3333
+load_fsbl /absolute/path/to/fsbl.elf
 ```
 
 This is the usual OpenOCD flow: OpenOCD only provides JTAG access and a GDB
 remote server; GDB performs the ELF section download and starts execution.
 
-The same sequence can be typed manually:
+Wait until FSBL has initialized clocks, MIO and DDR, then press `Ctrl-C` in GDB
+and load U-Boot:
+
+```gdb
+load_uboot /absolute/path/to/u-boot.elf
+```
+
+The same sequence can be typed manually without the helper file:
 
 ```gdb
 set pagination off
-set target-async on
 target extended-remote localhost:3333
 monitor targets zynqmp.a53.0
 monitor halt
 
 file /absolute/path/to/fsbl.elf
 load
-continue &
+continue
 
-shell sleep 5
-interrupt
+# Wait for FSBL init, then press Ctrl-C in GDB.
 
 file /absolute/path/to/u-boot.elf
 load
@@ -126,9 +136,8 @@ continue
 
 - `fsbl.elf` must be built for the exact board configuration: PS clocks, MIO,
   DDR and QSPI32 dual-parallel settings must match the hardware.
-- The GDB helper waits 5 seconds for FSBL to initialize the platform, interrupts
-  A53, then loads `u-boot.elf`. Increase the `shell sleep 5` delay if DDR or
-  board init takes longer.
+- After `load_fsbl`, wait until FSBL has initialized the platform, interrupt
+  A53 with `Ctrl-C`, then run `load_uboot`.
 - A normal ZynqMP U-Boot flow often also needs PMU firmware and ARM Trusted
   Firmware (`bl31.elf`). This minimal flow assumes your `u-boot.elf` is
   suitable to run directly after FSBL, or that those stages are already handled
